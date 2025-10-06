@@ -1,4 +1,5 @@
-﻿using Moq;
+﻿using AutoFixture;
+using Moq;
 using WeatherMonitoringAndReporting.Features.WeatherBots.Models;
 using WeatherMonitoringAndReporting.Features.WeatherBots.Strategies;
 using WeatherMonitoringAndReporting.Features.WeatherStation.Events;
@@ -13,11 +14,13 @@ public class BotTests
         
     public BotTests()
     {
+        var fixture = new Fixture();
         _botStrategyMock = new Mock<IBotStrategy>();
-        _weather =new Weather()
-        {
-            Location = "TestLocation", Humidity = 100, Temperature = 100
-        };
+        _weather = fixture.Build<Weather>()
+            .With(w => w.Location, "TestLocation")
+            .With(w => w.Humidity, 100)
+            .With(w => w.Temperature, 100)
+            .Create();
     }
     
     [Fact]
